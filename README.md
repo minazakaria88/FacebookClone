@@ -47,6 +47,7 @@ A simple social media Flutter app demonstrating:
 | Login / Register | Feeds | Add Post |
 |------------------|-------|----------|
 |  ![Screenshot_20250705_211607](https://github.com/user-attachments/assets/f8353b10-4ce5-4972-8050-d46b772d9097)![Screenshot_20250705_211618](https://github.com/user-attachments/assets/534bb22c-7b9a-4e89-9f8f-3f437bb524a0)
+![Screenshot_20250705_211515](https://github.com/user-attachments/assets/62099460-1e77-4ec8-abe2-cdd8cf8c04cb)
 
 |![Screenshot_20250705_211555](https://github.com/user-attachments/assets/fe097ea0-3dfd-4be5-a42f-8f142a318955)
  |
