@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "202497703177",
+    "project_id": "appfactory-698d7",
+    "storage_bucket": "appfactory-698d7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202497703177:android:e15b342f51ba12c46327d8",
+        "android_client_info": {
+          "package_name": "com.example.app_factory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202497703177-lc2631dfcqfakgo1ulpvrgiegi40e2qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjI4cOdWn3oYOtNXeFDCXYjCqMVF7AR9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202497703177-lc2631dfcqfakgo1ulpvrgiegi40e2qr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "202497703177-o6eirmo3edcn441l75flncf7qkjge66f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appFactory"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
