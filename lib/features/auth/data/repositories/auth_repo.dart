@@ -32,7 +32,7 @@ class AuthRepository {
     final googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) {
-      return null;
+      throw Exception('Google sign in was cancelled');
     }
     final googleAuth = await googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
