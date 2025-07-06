@@ -1,3 +1,5 @@
+import 'package:app_factory/core/helpers/extenstion.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,11 +21,23 @@ class MyDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(color: AppColors.blueColor),
-            child: Text(
-              'App Factory',
-              style: AppStyles.bold28BlackTextColor.copyWith(
-                color: Colors.white,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Connect',
+                  style: AppStyles.bold28BlackTextColor.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                10.h,
+                Text(
+                  FirebaseAuth.instance.currentUser!.displayName ?? '',
+                  style: AppStyles.regular16textgreyColor.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
           ListTile(

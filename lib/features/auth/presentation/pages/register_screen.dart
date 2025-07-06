@@ -35,132 +35,148 @@ class _LoginScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state.registerStatus == RegisterStatus.success) {
-              Navigator.pushReplacementNamed(context, Routes.feeds);
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Register Success')));
-            }
-            if (state.registerStatus == RegisterStatus.error) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-            }
-            if (state.registerWithGoogleStatus ==
-                RegisterWithGoogleStatus.success) {
-              Navigator.pushReplacementNamed(context, Routes.feeds);
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Register Success')));
-            }
-            if (state.registerWithGoogleStatus ==
-                RegisterWithGoogleStatus.error) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-            }
-          },
-          builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                SliverFillRemaining(
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        80.h,
-                        const Text(
-                          'Create an account',
-                          style: AppStyles.bold28BlackTextColor,
-                        ),
-                        20.h,
-                        MyTextForm(
-                          controller: email,
-                          hint: 'Email',
-                          validator: (String? value) {
-                            return ValidationClass.validateEmail(value);
-                          },
-                        ),
-                        20.h,
-                        MyTextForm(
-                          controller: password,
-                          hint: 'Password',
-                          validator: (String? value) {
-                            return ValidationClass.validateText(
-                              value,
-                              'PLease Enter A Valid Password',
-                            );
-                          },
-                        ),
-                        20.h,
-                        MyTextForm(
-                          controller: userName,
-                          hint: 'Username',
-                          validator: (String? value) {
-                            return ValidationClass.validateText(
-                              value,
-                              'PLease Enter A Valid Username',
-                            );
-                          },
-                        ),
-                        30.h,
-                        state.registerStatus == RegisterStatus.loading
-                            ? const CircularProgressIndicator()
-                            : MyButton(
-                                text: 'Sign Up',
-                                onTap: () {
-                                  if (formKey.currentState!.validate()) {
-                                    context.read<AuthCubit>().register(
-                                      email: email.text,
-                                      password: password.text,
-                                      name: userName.text,
-                                    );
-                                  }
-                                },
-                              ),
-                        20.h,
-                        state.registerWithGoogleStatus ==
-                                RegisterWithGoogleStatus.loading
-                            ? const CircularProgressIndicator()
-                            : MyButton(
-                                text: 'Sign Up With Google',
-                                onTap: () {
-                                  context
-                                      .read<AuthCubit>()
-                                      .registerWithGoogle();
-                                },
-                                textColor: AppColors.blackTextColor,
-                                color: AppColors.greyColor,
-                              ),
-                        const Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Already have an account?',
-                              style: AppStyles.regular14textgreyColor,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed(Routes.login);
-                              },
-                              child: const Text(
-                                'Log in',
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (previous, current) =>
+                  previous.registerStatus != current.registerStatus,
+              listener: (context, state) {
+                if (state.registerStatus == RegisterStatus.success) {
+                  Navigator.pushReplacementNamed(context, Routes.feeds);
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Login Success')));
+                }
+                if (state.registerStatus == RegisterStatus.error) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+                }
+              },
+            ),
+
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (previous, current) => previous
+                  .registerWithGoogleStatus != current.registerWithGoogleStatus,
+              listener: (context, state) {
+                if (state.registerWithGoogleStatus ==
+                    RegisterWithGoogleStatus.success) {
+                  Navigator.pushReplacementNamed(context, Routes.feeds);
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text('Register Success')));
+                }
+                if (state.registerWithGoogleStatus ==
+                    RegisterWithGoogleStatus.error) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+                }
+              },
+            ),
+
+          ],
+          child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          80.h,
+                          const Text(
+                            'Create an account',
+                            style: AppStyles.bold28BlackTextColor,
+                          ),
+                          20.h,
+                          MyTextForm(
+                            controller: email,
+                            hint: 'Email',
+                            validator: (String? value) {
+                              return ValidationClass.validateEmail(value);
+                            },
+                          ),
+                          20.h,
+                          MyTextForm(
+                            controller: password,
+                            hint: 'Password',
+                            validator: (String? value) {
+                              return ValidationClass.validateText(
+                                value,
+                                'PLease Enter A Valid Password',
+                              );
+                            },
+                          ),
+                          20.h,
+                          MyTextForm(
+                            controller: userName,
+                            hint: 'Username',
+                            validator: (String? value) {
+                              return ValidationClass.validateText(
+                                value,
+                                'PLease Enter A Valid Username',
+                              );
+                            },
+                          ),
+                          30.h,
+                          state.registerStatus == RegisterStatus.loading
+                              ? const CircularProgressIndicator()
+                              : MyButton(
+                                  text: 'Sign Up',
+                                  onTap: () {
+                                    if (formKey.currentState!.validate()) {
+                                      context.read<AuthCubit>().register(
+                                        email: email.text,
+                                        password: password.text,
+                                        name: userName.text,
+                                      );
+                                    }
+                                  },
+                                ),
+                          20.h,
+                          state.registerWithGoogleStatus ==
+                                  RegisterWithGoogleStatus.loading
+                              ? const CircularProgressIndicator()
+                              : MyButton(
+                                  text: 'Sign Up With Google',
+                                  onTap: () {
+                                    context
+                                        .read<AuthCubit>()
+                                        .registerWithGoogle();
+                                  },
+                                  textColor: AppColors.blackTextColor,
+                                  color: AppColors.greyColor,
+                                ),
+                          const Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Already have an account?',
                                 style: AppStyles.regular14textgreyColor,
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(Routes.login);
+                                },
+                                child: const Text(
+                                  'Log in',
+                                  style: AppStyles.regular14textgreyColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

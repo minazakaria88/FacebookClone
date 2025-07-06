@@ -23,7 +23,6 @@ class AuthRepository {
     );
     await userCredential.user!.updateDisplayName(name);
     await userCredential.user!.reload();
-
     return userCredential.user!;
   }
 

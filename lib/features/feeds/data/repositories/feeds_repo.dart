@@ -80,6 +80,7 @@ class FeedsRepository {
 
   Future<void> addComment(PostModel post, String comment) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
+    logger.d(userId);
     final commentModel = CommentModel(
       userId: userId?? '',
       comment: comment,
