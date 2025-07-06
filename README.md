@@ -5,6 +5,7 @@ A simple social media Flutter app demonstrating:
 ✅ Firebase Authentication (Email/Password & Google Sign-In)  
 ✅ Firestore for storing user posts  
 ✅ Like / Unlike posts  
+✅ Comments Screens
 ✅ Suggested users fetched from a REST API (Dummy JSON)  
 ✅ Google Mobile Ads native banner integration  
 ✅ Clean architecture with Cubit + Repository  
@@ -51,7 +52,9 @@ A simple social media Flutter app demonstrating:
 ![Screenshot_20250705_211515](https://github.com/user-attachments/assets/62099460-1e77-4ec8-abe2-cdd8cf8c04cb)
 
 |![Screenshot_20250705_211555](https://github.com/user-attachments/assets/fe097ea0-3dfd-4be5-a42f-8f142a318955)
- |
+ |![Screenshot_20250706_105454](https://github.com/user-attachments/assets/bb597196-ac0c-473f-b384-742300b0b87d)
+![Screenshot_20250706_105502](https://github.com/user-attachments/assets/058e826d-14c6-426c-b1b9-ce3a10900185)
+
 
 ---
 
