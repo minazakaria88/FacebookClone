@@ -113,4 +113,20 @@ class FeedsCubit extends Cubit<FeedsState> {
   void logout() async {
     await feedsRepository.logout();
   }
+
+
+  void addComment(PostModel post, String comment) async {
+    try {
+      emit(state.copyWith(addCommentStatus: AddCommentStatus.loading));
+      await feedsRepository.addComment(post, comment);
+      emit(state.copyWith(addCommentStatus: AddCommentStatus.success));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          addCommentStatus: AddCommentStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
 }

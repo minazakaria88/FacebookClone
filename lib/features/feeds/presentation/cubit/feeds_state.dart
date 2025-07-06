@@ -4,6 +4,8 @@ enum AddPostStatus { initial, loading, success, error }
 
 enum GetPostsStatus { initial, loading, success, error }
 
+enum AddCommentStatus { initial, loading, success, error }
+
 enum GetSuggestionsStatus { initial, loading, success, error }
 enum ToggleLikeStatus { initial, loading, success, error }
 extension FeedStatusX on FeedsState {
@@ -19,11 +21,15 @@ extension FeedStatusX on FeedsState {
   bool get isToggleLikeLoading => toggleLikeStatus == ToggleLikeStatus.loading;
   bool get isToggleLikeSuccess => toggleLikeStatus == ToggleLikeStatus.success;
   bool get isToggleLikeError => toggleLikeStatus == ToggleLikeStatus.error;
+  bool get isAddCommentLoading => addCommentStatus == AddCommentStatus.loading;
+  bool get isAddCommentSuccess => addCommentStatus == AddCommentStatus.success;
+  bool get isAddCommentError => addCommentStatus == AddCommentStatus.error;
 
 }
 
 class FeedsState extends Equatable {
   AddPostStatus? addPostStatus;
+  AddCommentStatus? addCommentStatus;
   GetPostsStatus? getPostsStatus;
   String? errorMessage;
   List<PostModel>? posts;
@@ -42,7 +48,8 @@ class FeedsState extends Equatable {
     this.getSuggestionsStatus,
     this.suggestions,
     this.bannerAd,
-    this.bannerAdLoaded
+    this.bannerAdLoaded,
+    this.addCommentStatus
   });
 
   FeedsState copyWith({
@@ -54,7 +61,8 @@ class FeedsState extends Equatable {
     GetSuggestionsStatus? getSuggestionsStatus,
     List<UserModel>? suggestions,
     BannerAd? bannerAd,
-    bool ? bannerAdLoaded
+    bool ? bannerAdLoaded,
+    AddCommentStatus? addCommentStatus
   }) {
     return FeedsState(
       addPostStatus: addPostStatus ?? this.addPostStatus,
@@ -65,7 +73,8 @@ class FeedsState extends Equatable {
       getSuggestionsStatus: getSuggestionsStatus ?? this.getSuggestionsStatus,
       suggestions: suggestions ?? this.suggestions,
       bannerAd: bannerAd ?? this.bannerAd,
-      bannerAdLoaded: bannerAdLoaded ?? this.bannerAdLoaded
+      bannerAdLoaded: bannerAdLoaded ?? this.bannerAdLoaded,
+      addCommentStatus: addCommentStatus ?? this.addCommentStatus
     );
   }
 
@@ -79,6 +88,7 @@ class FeedsState extends Equatable {
     getSuggestionsStatus,
     suggestions,
     bannerAd,
-    bannerAdLoaded
+    bannerAdLoaded,
+    addCommentStatus
   ];
 }

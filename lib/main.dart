@@ -16,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setup();
   ApiHelper.init();
-  await MobileAds.instance.initialize();
+   MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await checkIfTheUserLoggedIn();
   runApp(const FeedApp());

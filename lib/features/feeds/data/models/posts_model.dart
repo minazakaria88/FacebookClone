@@ -1,3 +1,4 @@
+import 'package:app_factory/features/feeds/data/models/comment_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,12 +9,14 @@ class PostModel {
   final String description;
   final String imageUrl;
   final List<String> likes;
+  final List<CommentModel> comments;
   final DateTime createdAt;
    bool? isLiked;
 
   PostModel({
     this.id,
     this.isLiked,
+    required this.comments,
     required this.userId,
     required this.title,
     required this.description,
@@ -25,6 +28,9 @@ class PostModel {
   factory PostModel.fromJson(Map<String, dynamic> json, String id) {
     return PostModel(
       id: id,
+      comments: List<CommentModel>.from(
+        json['comments']?.map((x) => CommentModel.fromJson(x)) ?? [],
+      ),
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
@@ -44,6 +50,7 @@ class PostModel {
       'description': description,
       'imageUrl': imageUrl,
       'likes': likes,
+      'comments': comments,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }

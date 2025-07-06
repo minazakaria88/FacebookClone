@@ -116,6 +116,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                       description: _descriptionController.text,
                                       imageUrl: _imageController.text,
                                       likes: [],
+                                      comments: [],
                                       createdAt: DateTime.now(),
                                     );
                                     context.read<FeedsCubit>().addPost(model);

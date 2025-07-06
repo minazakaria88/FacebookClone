@@ -106,18 +106,20 @@ class FeedsScreen extends StatelessWidget {
                 builder: (context, state) {
                   final list = state.posts ?? [];
                   if (state.isGetError) {
-                    return SliverToBoxAdapter(child: Center(child: Text(state.errorMessage!)));
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text(state.errorMessage!)),
+                    );
                   }
                   if (state.isGetSuccess) {
                     return list.isEmpty
                         ? const SliverToBoxAdapter(
-                          child: Center(
+                            child: Center(
                               child: Text(
                                 'No Posts',
                                 style: AppStyles.bold28BlackTextColor,
                               ),
                             ),
-                        )
+                          )
                         : SliverList.separated(
                             itemCount: list.length,
                             separatorBuilder: (context, index) => 10.h,
@@ -135,4 +137,3 @@ class FeedsScreen extends StatelessWidget {
     );
   }
 }
-

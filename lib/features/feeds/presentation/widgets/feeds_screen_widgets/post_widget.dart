@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/routes/routes.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../cubit/feeds_cubit.dart';
@@ -15,26 +16,35 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FeedsCubit, FeedsState>(
-      buildWhen: (previous, current) => previous.toggleLikeStatus != current.toggleLikeStatus,
+      buildWhen: (previous, current) =>
+          previous.toggleLikeStatus != current.toggleLikeStatus ||
+          previous.addCommentStatus != current.addCommentStatus,
       builder: (context, state) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+              ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: CachedNetworkImage(
                 height: 200,
                 width: double.infinity,
                 imageUrl: model.imageUrl,
-                placeholder: (context, url) => const CircularProgressIndicator(),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 fit: BoxFit.fill,
               ),
             ),
             5.h,
-            Text(model.title, maxLines: 1, style: AppStyles.bold18BlackTextColor),
+            Text(
+              model.title,
+              maxLines: 1,
+              style: AppStyles.bold18BlackTextColor,
+            ),
             5.h,
             Text(model.description, style: AppStyles.regular14textgreyColor),
             Row(
@@ -47,7 +57,9 @@ class PostWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     model.isLiked! ? Icons.favorite : Icons.favorite_border,
-                    color: model.isLiked! ? Colors.red : AppColors.textGreyColor,
+                    color: model.isLiked!
+                        ? Colors.red
+                        : AppColors.textGreyColor,
                   ),
                 ),
                 Text(
@@ -57,8 +69,29 @@ class PostWidget extends StatelessWidget {
                     color: AppColors.textGreyColor,
                   ),
                 ),
-
-
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.comments,
+                      arguments: {
+                        'model': model,
+                        'cubit': context.read<FeedsCubit>(),
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.comment_outlined,
+                    color: AppColors.textGreyColor,
+                  ),
+                ),
+                Text(
+                  model.comments.length.toString(),
+                  style: AppStyles.bold18BlackTextColor.copyWith(
+                    fontSize: 14,
+                    color: AppColors.textGreyColor,
+                  ),
+                ),
               ],
             ),
           ],

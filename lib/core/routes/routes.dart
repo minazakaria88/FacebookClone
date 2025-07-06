@@ -3,4 +3,5 @@ class Routes {
   static const String register = '/register';
   static const String feeds = '/feeds';
   static const String addPost = '/add-post';
+  static const String comments = '/comments';
 }

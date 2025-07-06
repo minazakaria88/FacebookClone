@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/api/end_points.dart';
 import '../../../../main.dart';
+import '../models/comment_model.dart';
 
 class FeedsRepository {
   final ApiHelper apiHelper;
@@ -74,6 +75,28 @@ class FeedsRepository {
             }
           throw ApiException(failure: Failure(message: e.toString()));
         }
+  }
+
+
+  Future<void> addComment(PostModel post, String comment) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final commentModel = CommentModel(
+      userId: userId?? '',
+      comment: comment,
+      createdAt: DateTime.now(),
+    );
+    post.comments.add(commentModel);
+    if (userId != null) {
+      firestore.doc(post.id).update({
+        'comments': FieldValue.arrayUnion([
+          {
+            'userId': userId,
+            'comment': comment,
+            'createdAt': DateTime.now(),
+          }
+        ]),
+      });
+    }
   }
 
   
