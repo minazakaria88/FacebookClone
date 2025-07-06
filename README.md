@@ -6,6 +6,7 @@ A simple social media Flutter app demonstrating:
 ✅ Firestore for storing user posts  
 ✅ Like / Unlike posts  
 ✅ Comments Screens
+
 ✅ Suggested users fetched from a REST API (Dummy JSON)  
 ✅ Google Mobile Ads native banner integration  
 ✅ Clean architecture with Cubit + Repository  
