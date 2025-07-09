@@ -55,34 +55,29 @@ class FeedsRepository {
     await GoogleSignIn().signOut();
   }
 
-
   Future<List<UserModel>> getSuggestions() async {
     List<UserModel> users = [];
-    try
-        {
-          final response = await apiHelper.getData(url: EndPoints.suggestions);
-          for (var element in response.data) {
-            users.add(UserModel.fromJson(element));
-          }
-          logger.d(response.data);
-          return users;
-        }catch(e)
-        {
-          logger.i(e.toString());
-          if(e is DioException)
-            {
-              throw ApiException(failure: ServerFailure.serverError(e));
-            }
-          throw ApiException(failure: Failure(message: e.toString()));
-        }
+    try {
+      final response = await apiHelper.getData(url: EndPoints.suggestions);
+      for (var element in response.data) {
+        users.add(UserModel.fromJson(element));
+      }
+      logger.d(response.data);
+      return users;
+    } catch (e) {
+      logger.i(e.toString());
+      if (e is DioException) {
+        throw ApiException(failure: ServerFailure.serverError(e));
+      }
+      throw ApiException(failure: Failure(message: e.toString()));
+    }
   }
-
 
   Future<void> addComment(PostModel post, String comment) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     logger.d(userId);
     final commentModel = CommentModel(
-      userId: userId?? '',
+      userId: userId ?? '',
       comment: comment,
       createdAt: DateTime.now(),
     );
@@ -90,15 +85,9 @@ class FeedsRepository {
     if (userId != null) {
       firestore.doc(post.id).update({
         'comments': FieldValue.arrayUnion([
-          {
-            'userId': userId,
-            'comment': comment,
-            'createdAt': DateTime.now(),
-          }
+          {'userId': userId, 'comment': comment, 'createdAt': DateTime.now()},
         ]),
       });
     }
   }
-
-  
 }
