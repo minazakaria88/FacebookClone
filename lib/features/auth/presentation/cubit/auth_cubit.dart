@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:app_factory/features/auth/data/repositories/auth_repo.dart';
 import 'package:app_factory/main.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -98,19 +95,42 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> loginWithPhone({
     required String verificationId,
     required String smsCode,
-    required String name
+    required String name,
   }) async {
     try {
       emit(state.copyWith(otpStatus: OtpStatus.loading));
       await authRepository.signInWithPhoneNumber(
         verificationId: verificationId,
         smsCode: smsCode,
-        name: name
+        name: name,
       );
       emit(state.copyWith(otpStatus: OtpStatus.success));
     } catch (e) {
       emit(
         state.copyWith(otpStatus: OtpStatus.error, errorMessage: e.toString()),
+      );
+    }
+  }
+
+  void loginWithFacebook() async {
+    try {
+      emit(
+        state.copyWith(
+          loginWithFacebookStatus: LoginWithFacebookStatus.loading,
+        ),
+      );
+      await authRepository.signInWithFacebook();
+      emit(
+        state.copyWith(
+          loginWithFacebookStatus: LoginWithFacebookStatus.success,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          loginWithFacebookStatus: LoginWithFacebookStatus.error,
+          errorMessage: e.toString(),
+        ),
       );
     }
   }

@@ -49,6 +49,7 @@ dependencies:
   shimmer: ^3.0.0
   google_mobile_ads: ^6.0.0
   sms_autofill: ^2.4.1
+  flutter_facebook_auth: ^7.1.2
 
 
 

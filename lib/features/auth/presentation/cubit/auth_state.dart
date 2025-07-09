@@ -9,6 +9,9 @@ enum RegisterWithGoogleStatus { initial, loading, success, error }
 enum LoginWithPhoneStatus { initial, loading, success, error }
 
 
+enum LoginWithFacebookStatus { initial, loading, success, error }
+
+
 enum OtpStatus { initial, loading, success, error }
 
 class AuthState extends Equatable {
@@ -19,6 +22,7 @@ class AuthState extends Equatable {
   LoginWithPhoneStatus? loginWithPhoneStatus;
   String ? verificationId;
   OtpStatus? otpStatus;
+  LoginWithFacebookStatus? loginWithFacebookStatus;
   AuthState({
     this.loginStatus,
     this.registerStatus,
@@ -26,7 +30,8 @@ class AuthState extends Equatable {
     this.registerWithGoogleStatus,
     this.loginWithPhoneStatus,
     this.verificationId,
-    this.otpStatus
+    this.otpStatus,
+    this.loginWithFacebookStatus
   });
 
   AuthState copyWith({
@@ -36,7 +41,8 @@ class AuthState extends Equatable {
     String? errorMessage,
     LoginWithPhoneStatus? loginWithPhoneStatus,
     String? verificationId,
-    OtpStatus? otpStatus
+    OtpStatus? otpStatus,
+    LoginWithFacebookStatus? loginWithFacebookStatus
   }) {
     return AuthState(
       loginStatus: loginStatus ?? this.loginStatus,
@@ -46,7 +52,8 @@ class AuthState extends Equatable {
           registerWithGoogleStatus ?? this.registerWithGoogleStatus,
       loginWithPhoneStatus: loginWithPhoneStatus ?? this.loginWithPhoneStatus,
       verificationId: verificationId ?? this.verificationId,
-      otpStatus: otpStatus ?? this.otpStatus
+      otpStatus: otpStatus ?? this.otpStatus,
+      loginWithFacebookStatus: loginWithFacebookStatus ?? this.loginWithFacebookStatus
     );
   }
 
@@ -58,6 +65,7 @@ class AuthState extends Equatable {
     registerWithGoogleStatus,
     loginWithPhoneStatus,
     verificationId,
-    otpStatus
+    otpStatus,
+    loginWithFacebookStatus
   ];
 }

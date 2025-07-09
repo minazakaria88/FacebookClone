@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_factory/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
@@ -33,9 +34,7 @@ class AuthRepository {
     Completer<String> completer = Completer<String>();
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) {
-
-      },
+      verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           completer.completeError('The provided phone number is not valid.');
@@ -54,7 +53,7 @@ class AuthRepository {
   Future<User?> signInWithPhoneNumber({
     required String verificationId,
     required String smsCode,
-    required String name
+    required String name,
   }) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
@@ -80,6 +79,18 @@ class AuthRepository {
     );
     final userCredential = await FirebaseAuth.instance.signInWithCredential(
       credential,
+    );
+    return userCredential.user;
+  }
+
+  Future<User?> signInWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(
+          loginResult.accessToken?.tokenString ?? '',
+        );
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(
+      facebookAuthCredential,
     );
     return userCredential.user;
   }

@@ -77,43 +77,48 @@ class RegisterBody extends StatelessWidget {
                     state.registerStatus == RegisterStatus.loading
                         ? const CircularProgressIndicator()
                         : MyButton(
-                      text: 'Sign Up',
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<AuthCubit>().register(
-                            email: email.text,
-                            password: password.text,
-                            name: userName.text,
-                          );
-                        }
-                      },
-                    ),
+                            text: 'Sign Up',
+                            onTap: () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<AuthCubit>().register(
+                                  email: email.text,
+                                  password: password.text,
+                                  name: userName.text,
+                                );
+                              }
+                            },
+                          ),
                     20.h,
                     state.registerWithGoogleStatus ==
-                        RegisterWithGoogleStatus.loading
+                            RegisterWithGoogleStatus.loading
                         ? const CircularProgressIndicator()
                         : MyButton(
-                      text: 'Sign Up With Google',
-                      onTap: () {
-                        context.read<AuthCubit>().registerWithGoogle();
-                      },
-                      textColor: AppColors.blackTextColor,
-                      color: AppColors.greyColor,
-                    ),
+                            text: 'Sign Up With Google',
+                            onTap: () {
+                              context.read<AuthCubit>().registerWithGoogle();
+                            },
+                            textColor: AppColors.blackTextColor,
+                            color: AppColors.greyColor,
+                          ),
                     20.h,
                     state.loginWithPhoneStatus == LoginWithPhoneStatus.loading
                         ? const CircularProgressIndicator()
                         : MyButton(
-                      text: 'Sign In With Phone',
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => BlocProvider.value(
-                              value: context.read<AuthCubit>(),
-                              child: LoginWithPhoneWidget(phone: phone)),
-                        );
-                      },
-                    ),
+                            text: 'Sign In With Phone',
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<AuthCubit>(),
+                                  child: LoginWithPhoneWidget(phone: phone),
+                                ),
+                              );
+                            },
+                          ),
+                    20.h,
+                    MyButton(text: 'login with facebook', onTap: () {
+                      context.read<AuthCubit>().loginWithFacebook();
+                    }),
                     const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -145,10 +150,7 @@ class RegisterBody extends StatelessWidget {
 }
 
 class LoginWithPhoneWidget extends StatelessWidget {
-  const LoginWithPhoneWidget({
-    super.key,
-    required this.phone,
-  });
+  const LoginWithPhoneWidget({super.key, required this.phone});
 
   final TextEditingController phone;
 
@@ -176,9 +178,7 @@ class LoginWithPhoneWidget extends StatelessWidget {
             MyButton(
               text: 'Login',
               onTap: () {
-                context
-                    .read<AuthCubit>()
-                    .verifyPhoneNumber(
+                context.read<AuthCubit>().verifyPhoneNumber(
                   phoneNumber: '+2${phone.text}',
                 );
                 Navigator.pop(context);
