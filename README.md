@@ -27,7 +27,7 @@ A simple social media Flutter app demonstrating:
 - logout
 - Responsive design  
 - Clean state management with Bloc/Cubit
-- 
+- google ads
 
 ---
 
