@@ -1,6 +1,7 @@
 import 'package:app_factory/core/routes/routes.dart';
 import 'package:app_factory/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app_factory/features/auth/presentation/pages/login_screen.dart';
+import 'package:app_factory/features/auth/presentation/pages/otp_screen.dart';
 import 'package:app_factory/features/auth/presentation/pages/register_screen.dart';
 import 'package:app_factory/features/feeds/presentation/pages/add_post_screen.dart';
 import 'package:app_factory/features/feeds/presentation/pages/comments_screen.dart';
@@ -49,12 +50,22 @@ class AppRoutes {
           ),
         );
       case Routes.comments:
-        final data=settings.arguments as Map<String,dynamic>;
-        final model=data['model'] as PostModel;
-        final cubit=data['cubit'] as FeedsCubit;
+        final data = settings.arguments as Map<String, dynamic>;
+        final model = data['model'] as PostModel;
+        final cubit = data['cubit'] as FeedsCubit;
         return MaterialPageRoute(
-          builder: (_) =>
-              BlocProvider.value(value: cubit, child: CommentsScreen(model: model)),
+          builder: (_) => BlocProvider.value(
+            value: cubit,
+            child: CommentsScreen(model: model),
+          ),
+        );
+      case Routes.otp:
+        final verificationId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<AuthCubit>(),
+            child: OtpScreen(verificationId: verificationId),
+          ),
         );
 
       default:

@@ -43,9 +43,9 @@ class _LoginScreenState extends State<RegisterScreen> {
               listener: (context, state) {
                 if (state.registerStatus == RegisterStatus.success) {
                   Navigator.pushReplacementNamed(context, Routes.feeds);
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(const SnackBar(content: Text('Login Success')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Login Success')),
+                  );
                 }
                 if (state.registerStatus == RegisterStatus.error) {
                   ScaffoldMessenger.of(
@@ -56,15 +56,16 @@ class _LoginScreenState extends State<RegisterScreen> {
             ),
 
             BlocListener<AuthCubit, AuthState>(
-              listenWhen: (previous, current) => previous
-                  .registerWithGoogleStatus != current.registerWithGoogleStatus,
+              listenWhen: (previous, current) =>
+                  previous.registerWithGoogleStatus !=
+                  current.registerWithGoogleStatus,
               listener: (context, state) {
                 if (state.registerWithGoogleStatus ==
                     RegisterWithGoogleStatus.success) {
                   Navigator.pushReplacementNamed(context, Routes.feeds);
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(const SnackBar(content: Text('Register Success')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Register Success')),
+                  );
                 }
                 if (state.registerWithGoogleStatus ==
                     RegisterWithGoogleStatus.error) {
@@ -75,6 +76,25 @@ class _LoginScreenState extends State<RegisterScreen> {
               },
             ),
 
+            BlocListener<AuthCubit, AuthState>(
+              listenWhen: (previous, current) =>
+                  previous.loginWithPhoneStatus != current.loginWithPhoneStatus,
+              listener: (context, state) {
+                if (state.loginWithPhoneStatus ==
+                    LoginWithPhoneStatus.success) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    Routes.otp,
+                    arguments: state.verificationId,
+                  );
+                }
+                if (state.loginWithPhoneStatus == LoginWithPhoneStatus.error) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+                }
+              },
+            ),
           ],
           child: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
@@ -149,6 +169,18 @@ class _LoginScreenState extends State<RegisterScreen> {
                                   },
                                   textColor: AppColors.blackTextColor,
                                   color: AppColors.greyColor,
+                                ),
+                          20.h,
+                          state.loginWithPhoneStatus ==
+                                  LoginWithPhoneStatus.loading
+                              ? const CircularProgressIndicator()
+                              : MyButton(
+                                  text: 'Sign Up With Phone',
+                                  onTap: () {
+                                    context.read<AuthCubit>().verifyPhoneNumber(
+                                      phoneNumber: '+201064687742',
+                                    );
+                                  },
                                 ),
                           const Spacer(),
                           Row(

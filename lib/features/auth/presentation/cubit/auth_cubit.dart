@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:app_factory/features/auth/data/repositories/auth_repo.dart';
 import 'package:app_factory/main.dart';
 import 'package:bloc/bloc.dart';
@@ -67,6 +69,46 @@ class AuthCubit extends Cubit<AuthState> {
           registerWithGoogleStatus: RegisterWithGoogleStatus.error,
           errorMessage: e.toString(),
         ),
+      );
+    }
+  }
+
+  void verifyPhoneNumber({required String phoneNumber}) async {
+    try {
+      emit(state.copyWith(loginWithPhoneStatus: LoginWithPhoneStatus.loading));
+      final verificationId = await authRepository.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+      );
+      emit(
+        state.copyWith(
+          loginWithPhoneStatus: LoginWithPhoneStatus.success,
+          verificationId: verificationId,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          loginWithPhoneStatus: LoginWithPhoneStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> loginWithPhone({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    try {
+      emit(state.copyWith(otpStatus: OtpStatus.loading));
+      await authRepository.signInWithPhoneNumber(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      emit(state.copyWith(otpStatus: OtpStatus.success));
+    } catch (e) {
+      emit(
+        state.copyWith(otpStatus: OtpStatus.error, errorMessage: e.toString()),
       );
     }
   }

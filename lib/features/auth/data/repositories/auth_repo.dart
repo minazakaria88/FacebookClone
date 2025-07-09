@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_factory/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -26,6 +29,37 @@ class AuthRepository {
     return userCredential.user!;
   }
 
+  Future<String> verifyPhoneNumber({required String phoneNumber}) async {
+    Completer<String> completer = Completer<String>();
+    await auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          throw Exception('The provided phone number is not valid.');
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        logger.d(verificationId);
+        completer.complete(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+    return completer.future;
+  }
+
+  Future<User?> signInWithPhoneNumber({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    final userCredential = await auth.signInWithCredential(credential);
+    logger.d(credential);
+    return userCredential.user;
+  }
 
   Future<User?> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn();
