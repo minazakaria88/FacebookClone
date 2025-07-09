@@ -1,13 +1,8 @@
-import 'package:app_factory/core/helpers/extenstion.dart';
-import 'package:app_factory/core/helpers/validate_inpus_class.dart';
 import 'package:app_factory/core/routes/routes.dart';
-import 'package:app_factory/core/utils/app_colors.dart';
-import 'package:app_factory/core/utils/app_styles.dart';
-import 'package:app_factory/core/widget/my_button.dart';
-import 'package:app_factory/core/widget/my_text_form.dart';
 import 'package:app_factory/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../widgets/register_body.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,6 +15,7 @@ class _LoginScreenState extends State<RegisterScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController userName = TextEditingController();
+  final TextEditingController phone = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -27,6 +23,7 @@ class _LoginScreenState extends State<RegisterScreen> {
     email.dispose();
     password.dispose();
     userName.dispose();
+    phone.dispose();
     super.dispose();
   }
 
@@ -96,121 +93,16 @@ class _LoginScreenState extends State<RegisterScreen> {
               },
             ),
           ],
-          child: BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              return CustomScrollView(
-                slivers: [
-                  SliverFillRemaining(
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          80.h,
-                          const Text(
-                            'Create an account',
-                            style: AppStyles.bold28BlackTextColor,
-                          ),
-                          20.h,
-                          MyTextForm(
-                            controller: email,
-                            hint: 'Email',
-                            validator: (String? value) {
-                              return ValidationClass.validateEmail(value);
-                            },
-                          ),
-                          20.h,
-                          MyTextForm(
-                            controller: password,
-                            hint: 'Password',
-                            validator: (String? value) {
-                              return ValidationClass.validateText(
-                                value,
-                                'PLease Enter A Valid Password',
-                              );
-                            },
-                          ),
-                          20.h,
-                          MyTextForm(
-                            controller: userName,
-                            hint: 'Username',
-                            validator: (String? value) {
-                              return ValidationClass.validateText(
-                                value,
-                                'PLease Enter A Valid Username',
-                              );
-                            },
-                          ),
-                          30.h,
-                          state.registerStatus == RegisterStatus.loading
-                              ? const CircularProgressIndicator()
-                              : MyButton(
-                                  text: 'Sign Up',
-                                  onTap: () {
-                                    if (formKey.currentState!.validate()) {
-                                      context.read<AuthCubit>().register(
-                                        email: email.text,
-                                        password: password.text,
-                                        name: userName.text,
-                                      );
-                                    }
-                                  },
-                                ),
-                          20.h,
-                          state.registerWithGoogleStatus ==
-                                  RegisterWithGoogleStatus.loading
-                              ? const CircularProgressIndicator()
-                              : MyButton(
-                                  text: 'Sign Up With Google',
-                                  onTap: () {
-                                    context
-                                        .read<AuthCubit>()
-                                        .registerWithGoogle();
-                                  },
-                                  textColor: AppColors.blackTextColor,
-                                  color: AppColors.greyColor,
-                                ),
-                          20.h,
-                          state.loginWithPhoneStatus ==
-                                  LoginWithPhoneStatus.loading
-                              ? const CircularProgressIndicator()
-                              : MyButton(
-                                  text: 'Sign Up With Phone',
-                                  onTap: () {
-                                    context.read<AuthCubit>().verifyPhoneNumber(
-                                      phoneNumber: '+201064687742',
-                                    );
-                                  },
-                                ),
-                          const Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Already have an account?',
-                                style: AppStyles.regular14textgreyColor,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(Routes.login);
-                                },
-                                child: const Text(
-                                  'Log in',
-                                  style: AppStyles.regular14textgreyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+          child: RegisterBody(
+            formKey: formKey,
+            email: email,
+            password: password,
+            userName: userName,
+            phone: phone,
           ),
         ),
       ),
     );
   }
 }
+

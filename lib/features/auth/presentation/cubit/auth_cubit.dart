@@ -98,12 +98,14 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> loginWithPhone({
     required String verificationId,
     required String smsCode,
+    required String name
   }) async {
     try {
       emit(state.copyWith(otpStatus: OtpStatus.loading));
       await authRepository.signInWithPhoneNumber(
         verificationId: verificationId,
         smsCode: smsCode,
+        name: name
       );
       emit(state.copyWith(otpStatus: OtpStatus.success));
     } catch (e) {

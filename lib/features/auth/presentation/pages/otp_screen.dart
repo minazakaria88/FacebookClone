@@ -84,6 +84,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       await context.read<AuthCubit>().loginWithPhone(
                         verificationId: widget.verificationId,
                         smsCode: otpCode,
+                        name: 'mina zakaria'
                       );
                       otpCode = '';
                     }

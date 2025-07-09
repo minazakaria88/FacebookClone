@@ -33,11 +33,14 @@ class AuthRepository {
     Completer<String> completer = Completer<String>();
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationCompleted: (PhoneAuthCredential credential) {
+
+      },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          throw Exception('The provided phone number is not valid.');
+          completer.completeError('The provided phone number is not valid.');
         }
+        completer.completeError(e.message ?? 'Failed to verify phone number.');
       },
       codeSent: (String verificationId, int? resendToken) {
         logger.d(verificationId);
@@ -51,6 +54,7 @@ class AuthRepository {
   Future<User?> signInWithPhoneNumber({
     required String verificationId,
     required String smsCode,
+    required String name
   }) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
@@ -58,6 +62,8 @@ class AuthRepository {
     );
     final userCredential = await auth.signInWithCredential(credential);
     logger.d(credential);
+    await userCredential.user!.updateDisplayName(name);
+    await userCredential.user!.reload();
     return userCredential.user;
   }
 
